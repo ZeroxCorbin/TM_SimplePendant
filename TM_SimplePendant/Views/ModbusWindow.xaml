@@ -1,0 +1,118 @@
+﻿<Window x:Class="TM_SimplePendant.ModbusWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TM_Comms_WPF"
+        xmlns:viewmodels="clr-namespace:TM_SimplePendant.ViewModels"
+        d:DataContext="{d:DesignInstance Type=viewmodels:ModbusViewModel}"
+        mc:Ignorable="d"   
+        Icon="Support/favicon.ico"
+        ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight"
+        Closing="Window_Closing"
+        Loaded="Window_Loaded"
+        Title="{Binding Title, Mode=OneWay}"
+        Left="{Binding Left, Mode=TwoWay}"
+        Top="{Binding Top, Mode=TwoWay}">
+    <Window.DataContext>
+        <viewmodels:ModbusViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <StackPanel>
+            <Border BorderBrush="Black" BorderThickness="1" CornerRadius="3" Padding="3" Margin="5">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="{Binding ConnectButtonText}" Command="{Binding ConnectCommand}" Width="86" Height="48"/>
+
+                </StackPanel>
+            </Border>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Border x:Name="BdrRemoteAuto" BorderBrush="Black" BorderThickness="1" CornerRadius="3" Padding="3" Margin="5">
+                    <StackPanel>
+                        <StackPanel HorizontalAlignment="Center">
+                            <Label Content="Get Control" Padding="0"/>
+                            <Ellipse Fill="{Binding GetControl}" Height="12" Stroke="Black" Width="12" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center">
+                            <Label Content="R-Auto Enabled" Padding="0"/>
+                            <Ellipse Fill="{Binding AutoEnable}" Height="12" Stroke="Black" Width="12" />
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center">
+                            <Label Content="R-Auto Active" Padding="0"/>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Ellipse Fill="{Binding AutoActive}" Height="12" Stroke="Black" Width="12" />
+                                <!--<Button x:Name="BtnAutoActive" Background="Transparent" Height="20" Content="Active" Margin="3,0" Click="BtnAutoActive_Click" />-->
+                            </StackPanel>
+                        </StackPanel>
+
+                    </StackPanel>
+                </Border>
+                <Grid Height="105" Width="308"  Margin="5">
+                    <Grid.Background>
+                        <ImageBrush ImageSource="Support\TMControllerImage.png" Stretch="UniformToFill"/>
+                    </Grid.Background>
+                    <Ellipse Fill="{Binding Auto, Mode=OneWay}" HorizontalAlignment="Left" Height="12" Margin="211,12,0,0" Stroke="Black" VerticalAlignment="Top" Width="12"/>
+                    <Ellipse Fill="{Binding Power, Mode=OneWay}" HorizontalAlignment="Left" Height="12" Margin="113,12,0,0" Stroke="Black" VerticalAlignment="Top" Width="12"/>
+                    <Ellipse Fill="{Binding Manual, Mode=OneWay}" HorizontalAlignment="Left" Height="12" Margin="166,12,0,0" Stroke="Black" VerticalAlignment="Top" Width="12"/>
+                    <Ellipse Fill="{Binding Estop, Mode=OneWay}" HorizontalAlignment="Left" Height="57" Margin="39,24,0,0" Stroke="Black" VerticalAlignment="Top" Width="57"/>
+                    <Button Command="{Binding StopCommand}" Background="{Binding Stop}" HorizontalAlignment="Left" Height="36" Margin="124,57,0,0"  VerticalAlignment="Top" Width="36" BorderBrush="{x:Null}" Foreground="{x:Null}"/>
+                    <Button Command="{Binding PlayPauseCommand}" Background="{Binding Play}" HorizontalAlignment="Left" Height="36" Margin="176,57,0,0"  VerticalAlignment="Top" Width="37" Foreground="{x:Null}" BorderBrush="{x:Null}"/>
+                    <Button Command="{Binding MinusCommand}" HorizontalAlignment="Left" Height="36" Margin="228,57,0,0"  VerticalAlignment="Top" Width="36" Background="#00000000" BorderBrush="{x:Null}" Foreground="{x:Null}"/>
+                    <Button Command="{Binding PlusCommand}" HorizontalAlignment="Left" Height="36" Margin="228,11,0,0"  VerticalAlignment="Top" Width="36" Background="#00000000" BorderBrush="{x:Null}" Foreground="{x:Null}"/>
+                 </Grid>
+                <Border Height="105" MaxWidth="360" BorderBrush="Black" BorderThickness="1" CornerRadius="30"  Margin="5">
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" Margin="10,10,10,73">
+                            <Ellipse Fill="{Binding Error}" HorizontalAlignment="Left" Height="20" Stroke="Black" VerticalAlignment="Top" Width="20" Margin="0,0,5,0"/>
+                            <Border HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="1" CornerRadius="5" Margin="0,0,5,0" >
+                                <TextBox TextWrapping="Wrap" Text="{Binding ErrorCode}"  HorizontalContentAlignment="Center" BorderBrush="{x:Null}" IsReadOnly="True" Padding="3,0"/>
+                            </Border>
+                            <Border HorizontalAlignment="Left" Height="20" VerticalAlignment="Top" BorderBrush="Black" BorderThickness="1" CornerRadius="5" >
+                                <TextBox Text="{Binding ErrorDate}" IsUndoEnabled="False" BorderBrush="{x:Null}" IsReadOnly="True" Padding="3,0"/>
+                            </Border>
+                        </StackPanel>
+
+                        <TextBox Text="{Binding ErrorDescription}" HorizontalAlignment="Left" Height="58" Margin="10,35,10,0" TextWrapping="Wrap" VerticalAlignment="Top" BorderBrush="{x:Null}" BorderThickness="0" IsReadOnly="True"/>
+                    </Grid>
+
+                </Border>
+                <Border Height="105" MaxWidth="360" BorderBrush="Black" BorderThickness="1" CornerRadius="30"  Margin="5">
+                    <Grid>
+                        <TextBox Margin="10" x:Name="TxtSocketOutput" IsReadOnly="True" VerticalScrollBarVisibility="Auto" BorderBrush="{x:Null}" HorizontalScrollBarVisibility="Auto"/>
+
+                    </Grid>
+
+                </Border>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <Border BorderBrush="Black" BorderThickness="1"  CornerRadius="3" Padding="3" HorizontalAlignment="Left" Margin="5">
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" >
+                            <StackPanel x:Name="stackModbusComboBox" HorizontalAlignment="Left"/>
+                            <StackPanel x:Name="stackModbusReadButton" HorizontalAlignment="Left"/>
+                            <StackPanel x:Name="stackModbusText" HorizontalAlignment="Left"/>
+                            <StackPanel x:Name="stackModbusWriteButton" HorizontalAlignment="Left"/>
+                        </StackPanel>
+
+                    </Grid>
+                </Border>
+                <Border BorderBrush="Black" BorderThickness="1"  CornerRadius="3" Padding="3" HorizontalAlignment="Left" Margin="5">
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" >
+                            <StackPanel x:Name="stackModbusUserComboBox" HorizontalAlignment="Left"/>
+                            <StackPanel x:Name="stackModbusUserReadButton" HorizontalAlignment="Left"/>
+                            <StackPanel x:Name="stackModbusUserText" HorizontalAlignment="Left"/>
+                            <StackPanel x:Name="stackModbusUserWriteButton" HorizontalAlignment="Left"/>
+                        </StackPanel>
+
+                    </Grid>
+
+                </Border>
+            </StackPanel>
+
+        </StackPanel>
+
+    </Grid>
+</Window>
