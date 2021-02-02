@@ -4,12 +4,36 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <StartupObject></StartupObject>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Support\favicon.ico" />
+    <None Remove="Support\TMControllerImage.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Support\favicon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Support\TMControllerImage.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Commands\" />
     <Folder Include="ViewModels\" />
-    <Folder Include="Views\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Windows.Interactivity.WPF" Version="2.0.20525" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Git_Managed\SimpleModbus\SimpleModbus.csproj" />
+    <ProjectReference Include="..\..\..\Git_Managed\SocketManager\SocketManager.csproj" />
+    <ProjectReference Include="..\..\..\Git_Managed\TM_Comms\TM_Comms\TM_Comms.csproj" />
   </ItemGroup>
 
 </Project>

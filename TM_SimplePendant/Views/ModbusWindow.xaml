@@ -3,32 +3,42 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TM_Comms_WPF"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:local="clr-namespace:TM_SimplePendant"
         xmlns:viewmodels="clr-namespace:TM_SimplePendant.ViewModels"
         d:DataContext="{d:DesignInstance Type=viewmodels:ModbusViewModel}"
         mc:Ignorable="d"   
-        Icon="Support/favicon.ico"
         ResizeMode="NoResize"
         SizeToContent="WidthAndHeight"
-        Closing="Window_Closing"
-        Loaded="Window_Loaded"
         Title="{Binding Title, Mode=OneWay}"
         Left="{Binding Left, Mode=TwoWay}"
-        Top="{Binding Top, Mode=TwoWay}">
+        Top="{Binding Top, Mode=TwoWay}"
+        Icon="/Support/favicon.ico">
     <Window.DataContext>
         <viewmodels:ModbusViewModel/>
     </Window.DataContext>
     <Grid>
         <StackPanel>
             <Border BorderBrush="Black" BorderThickness="1" CornerRadius="3" Padding="3" Margin="5">
+                
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <StackPanel>
+                        <Label Content="Robot IP Address" Padding="0" Margin="3,0" HorizontalContentAlignment="Center"/>
+                        <TextBox Text="{Binding ConnectionString}" Width="160" Height="22" VerticalContentAlignment="Center" HorizontalContentAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <Label Content="System Version" Padding="0" Margin="3,0" HorizontalContentAlignment="Center" HorizontalAlignment="Left"/>
+
+                        <CheckBox Content=">= 1.8.xxxx" IsChecked="{Binding Is18}" Width="120" Margin="3,0" Height="21" HorizontalContentAlignment="Left" VerticalContentAlignment="Center" HorizontalAlignment="Stretch"/>
+                    </StackPanel>
+                    
                     <Button Content="{Binding ConnectButtonText}" Command="{Binding ConnectCommand}" Width="86" Height="48"/>
 
                 </StackPanel>
             </Border>
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Border x:Name="BdrRemoteAuto" BorderBrush="Black" BorderThickness="1" CornerRadius="3" Padding="3" Margin="5">
+                <Border Visibility="{Binding Border18Visible}" BorderBrush="Black" BorderThickness="1" CornerRadius="3" Padding="3" Margin="5">
                     <StackPanel>
                         <StackPanel HorizontalAlignment="Center">
                             <Label Content="Get Control" Padding="0"/>
@@ -50,7 +60,7 @@
                 </Border>
                 <Grid Height="105" Width="308"  Margin="5">
                     <Grid.Background>
-                        <ImageBrush ImageSource="Support\TMControllerImage.png" Stretch="UniformToFill"/>
+                        <ImageBrush Stretch="UniformToFill" ImageSource="/Support/TMControllerImage.png"/>
                     </Grid.Background>
                     <Ellipse Fill="{Binding Auto, Mode=OneWay}" HorizontalAlignment="Left" Height="12" Margin="211,12,0,0" Stroke="Black" VerticalAlignment="Top" Width="12"/>
                     <Ellipse Fill="{Binding Power, Mode=OneWay}" HorizontalAlignment="Left" Height="12" Margin="113,12,0,0" Stroke="Black" VerticalAlignment="Top" Width="12"/>
@@ -61,6 +71,39 @@
                     <Button Command="{Binding MinusCommand}" HorizontalAlignment="Left" Height="36" Margin="228,57,0,0"  VerticalAlignment="Top" Width="36" Background="#00000000" BorderBrush="{x:Null}" Foreground="{x:Null}"/>
                     <Button Command="{Binding PlusCommand}" HorizontalAlignment="Left" Height="36" Margin="228,11,0,0"  VerticalAlignment="Top" Width="36" Background="#00000000" BorderBrush="{x:Null}" Foreground="{x:Null}"/>
                  </Grid>
+                <Border BorderBrush="Black" BorderThickness="1" CornerRadius="30"  Margin="5">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/> 
+                            <RowDefinition Height="auto" />
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <Button Grid.Row="1" Content="DO14" Background="LightGreen" Margin="3">
+                            <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewMouseDown" >
+                                    <i:InvokeCommandAction Command="{Binding B14MouseDownCommand}" />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="PreviewMouseUp" >
+                                    <i:InvokeCommandAction Command="{Binding B14MouseUpCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>                            
+
+                        <Button Grid.Row="2" Content="DO15" Background="LightYellow" Margin="3">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="PreviewMouseDown" >
+                                    <i:InvokeCommandAction Command="{Binding B15MouseDownCommand}" />
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="PreviewMouseUp" >
+                                    <i:InvokeCommandAction Command="{Binding B15MouseUpCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Button>
+                    </Grid>
+
+                </Border>
                 <Border Height="105" MaxWidth="360" BorderBrush="Black" BorderThickness="1" CornerRadius="30"  Margin="5">
                     <Grid>
                         <StackPanel Orientation="Horizontal" Margin="10,10,10,73">
@@ -78,40 +121,15 @@
 
                 </Border>
                 <Border Height="105" MaxWidth="360" BorderBrush="Black" BorderThickness="1" CornerRadius="30"  Margin="5">
-                    <Grid>
-                        <TextBox Margin="10" x:Name="TxtSocketOutput" IsReadOnly="True" VerticalScrollBarVisibility="Auto" BorderBrush="{x:Null}" HorizontalScrollBarVisibility="Auto"/>
-
-                    </Grid>
-
-                </Border>
-            </StackPanel>
-
-            <StackPanel Orientation="Horizontal">
-                <Border BorderBrush="Black" BorderThickness="1"  CornerRadius="3" Padding="3" HorizontalAlignment="Left" Margin="5">
-                    <Grid>
-                        <StackPanel Orientation="Horizontal" >
-                            <StackPanel x:Name="stackModbusComboBox" HorizontalAlignment="Left"/>
-                            <StackPanel x:Name="stackModbusReadButton" HorizontalAlignment="Left"/>
-                            <StackPanel x:Name="stackModbusText" HorizontalAlignment="Left"/>
-                            <StackPanel x:Name="stackModbusWriteButton" HorizontalAlignment="Left"/>
-                        </StackPanel>
-
-                    </Grid>
-                </Border>
-                <Border BorderBrush="Black" BorderThickness="1"  CornerRadius="3" Padding="3" HorizontalAlignment="Left" Margin="5">
-                    <Grid>
-                        <StackPanel Orientation="Horizontal" >
-                            <StackPanel x:Name="stackModbusUserComboBox" HorizontalAlignment="Left"/>
-                            <StackPanel x:Name="stackModbusUserReadButton" HorizontalAlignment="Left"/>
-                            <StackPanel x:Name="stackModbusUserText" HorizontalAlignment="Left"/>
-                            <StackPanel x:Name="stackModbusUserWriteButton" HorizontalAlignment="Left"/>
-                        </StackPanel>
-
-                    </Grid>
+                    <ListView ItemsSource="{Binding UserItems}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
 
                 </Border>
             </StackPanel>
-
         </StackPanel>
 
     </Grid>
